@@ -1,7 +1,7 @@
 ﻿
 namespace Fast_Food_Restaurant
 {
-    partial class Form1
+    partial class App
     {
         /// <summary>
         /// Required designer variable.
