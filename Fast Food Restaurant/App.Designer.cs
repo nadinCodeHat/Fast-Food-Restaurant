@@ -103,6 +103,7 @@ namespace Fast_Food_Restaurant
             this.foodTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.foodTable.Location = new System.Drawing.Point(285, 32);
             this.foodTable.Name = "foodTable";
+            this.foodTable.RowTemplate.ReadOnly = true;
             this.foodTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.foodTable.Size = new System.Drawing.Size(557, 185);
             this.foodTable.TabIndex = 4;
