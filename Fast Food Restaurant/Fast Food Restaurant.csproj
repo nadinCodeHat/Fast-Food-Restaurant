@@ -60,6 +60,9 @@
     <Compile Include="Select_Langauge.Designer.cs">
       <DependentUpon>Select_Langauge.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="App.resx">
+      <DependentUpon>App.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

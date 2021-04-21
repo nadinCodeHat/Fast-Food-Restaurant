@@ -16,7 +16,7 @@ namespace Fast_Food_Restaurant
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Select_Langauge());
+            Application.Run(new App());
         }
     }
 }
