@@ -16,5 +16,12 @@ namespace Fast_Food_Restaurant
         {
             InitializeComponent();
         }
+
+        private void App_Load(object sender, EventArgs e)
+        {
+            // TODO: This line of code loads data into the 'foodDBDataSet.Food' table. You can move, or remove it, as needed.
+            this.foodTableAdapter.Fill(this.foodDBDataSet.Food);
+
+        }
     }
 }

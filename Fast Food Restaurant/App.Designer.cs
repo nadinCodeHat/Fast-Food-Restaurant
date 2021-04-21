@@ -29,6 +29,7 @@ namespace Fast_Food_Restaurant
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.foodIdLabel = new System.Windows.Forms.Label();
             this.foodIdTextBox = new System.Windows.Forms.TextBox();
             this.sizecomboBox = new System.Windows.Forms.ComboBox();
@@ -58,10 +59,19 @@ namespace Fast_Food_Restaurant
             this.filterbycuisineLabel = new System.Windows.Forms.Label();
             this.filterbycuisinecomboBox = new System.Windows.Forms.ComboBox();
             this.cuisineTable = new System.Windows.Forms.DataGridView();
+            this.foodDBDataSet = new Fast_Food_Restaurant.FoodDBDataSet();
+            this.foodBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.foodTableAdapter = new Fast_Food_Restaurant.FoodDBDataSetTableAdapters.FoodTableAdapter();
+            this.foodIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.foodNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.descriptionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.foodTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cuisineTable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.foodDBDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.foodBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // foodIdLabel
@@ -99,9 +109,18 @@ namespace Fast_Food_Restaurant
             // 
             // foodTable
             // 
+            this.foodTable.AutoGenerateColumns = false;
+            this.foodTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.foodTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.foodTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.foodIDDataGridViewTextBoxColumn,
+            this.foodNameDataGridViewTextBoxColumn,
+            this.priceDataGridViewTextBoxColumn,
+            this.descriptionDataGridViewTextBoxColumn});
+            this.foodTable.DataSource = this.foodBindingSource;
             this.foodTable.Location = new System.Drawing.Point(285, 32);
             this.foodTable.Name = "foodTable";
+            this.foodTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.foodTable.Size = new System.Drawing.Size(557, 185);
             this.foodTable.TabIndex = 4;
             // 
@@ -313,6 +332,44 @@ namespace Fast_Food_Restaurant
             this.cuisineTable.Size = new System.Drawing.Size(451, 130);
             this.cuisineTable.TabIndex = 28;
             // 
+            // foodDBDataSet
+            // 
+            this.foodDBDataSet.DataSetName = "FoodDBDataSet";
+            this.foodDBDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // foodBindingSource
+            // 
+            this.foodBindingSource.DataMember = "Food";
+            this.foodBindingSource.DataSource = this.foodDBDataSet;
+            // 
+            // foodTableAdapter
+            // 
+            this.foodTableAdapter.ClearBeforeFill = true;
+            // 
+            // foodIDDataGridViewTextBoxColumn
+            // 
+            this.foodIDDataGridViewTextBoxColumn.DataPropertyName = "FoodID";
+            this.foodIDDataGridViewTextBoxColumn.HeaderText = "FoodID";
+            this.foodIDDataGridViewTextBoxColumn.Name = "foodIDDataGridViewTextBoxColumn";
+            // 
+            // foodNameDataGridViewTextBoxColumn
+            // 
+            this.foodNameDataGridViewTextBoxColumn.DataPropertyName = "FoodName";
+            this.foodNameDataGridViewTextBoxColumn.HeaderText = "FoodName";
+            this.foodNameDataGridViewTextBoxColumn.Name = "foodNameDataGridViewTextBoxColumn";
+            // 
+            // priceDataGridViewTextBoxColumn
+            // 
+            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
+            this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
+            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
+            // 
+            // descriptionDataGridViewTextBoxColumn
+            // 
+            this.descriptionDataGridViewTextBoxColumn.DataPropertyName = "Description";
+            this.descriptionDataGridViewTextBoxColumn.HeaderText = "Description";
+            this.descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
+            // 
             // App
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -350,10 +407,13 @@ namespace Fast_Food_Restaurant
             this.Name = "App";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Fast Food Restaurant";
+            this.Load += new System.EventHandler(this.App_Load);
             ((System.ComponentModel.ISupportInitialize)(this.foodTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cuisineTable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.foodDBDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.foodBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -390,6 +450,13 @@ namespace Fast_Food_Restaurant
         private System.Windows.Forms.Label filterbycuisineLabel;
         private System.Windows.Forms.ComboBox filterbycuisinecomboBox;
         private System.Windows.Forms.DataGridView cuisineTable;
+        private FoodDBDataSet foodDBDataSet;
+        private System.Windows.Forms.BindingSource foodBindingSource;
+        private FoodDBDataSetTableAdapters.FoodTableAdapter foodTableAdapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn foodIDDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn foodNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
     }
 }
 
