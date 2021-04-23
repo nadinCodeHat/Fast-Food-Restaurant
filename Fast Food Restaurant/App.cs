@@ -143,7 +143,7 @@ namespace Fast_Food_Restaurant
                 priceTextBox.Text = row.Cells["Price"].Value.ToString();
                 descriptionTextBox.Text = row.Cells["Description"].Value.ToString();
 
-                DataRow[] dr = food_dt.Select(row.Cells["FoodID"].Value.ToString());
+                DataRow[] dr = food_dt.Select(string.Format("FoodID ='{0}' ", row.Cells["FoodID"].Value.ToString()));
                 foreach (DataRow d1row in dr)
                 {
                     int msize = d1row.Field<int>("MSize");
@@ -152,7 +152,7 @@ namespace Fast_Food_Restaurant
                     {
                         try
                         {
-                            string query = "SELECT MealSize.SizeName, Cuisine.CuisineName FROM MealSize,Cuisine WHERE MealSize.SizeID = Food.MSize AND Cuisine.CuisineID = Food.Cuisine AND Food.MSize ='" + msize + "' AND Food.Cuisine = '" + cuisine + "'";
+                            string query = "SELECT MealSize.SizeName, Cuisine.CuisineName FROM MealSize,Cuisine,Food WHERE MealSize.SizeID = Food.MSize AND Cuisine.CuisineID = Food.Cuisine AND Food.MSize ='" + msize + "' AND Food.Cuisine = '" + cuisine + "'";
                             using (SqlCommand cmd = new SqlCommand(query, con))
                             {
                                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
@@ -161,8 +161,8 @@ namespace Fast_Food_Restaurant
                                     sda.Fill(dt);
                                     foreach (DataRow d2row in dt.Rows)
                                     {
-                                       sizecomboBox.SelectedItem = d2row["SizeName"].ToString();
-                                       cuisinecomboBox.SelectedItem =  d2row["Cuisine"].ToString();
+                                        sizecomboBox.SelectedItem = d2row["SizeName"].ToString();
+                                        cuisinecomboBox.SelectedItem = d2row["CuisineName"].ToString();
                                     }
                                 }
                             }
@@ -172,9 +172,45 @@ namespace Fast_Food_Restaurant
                             MessageBox.Show(ex.ToString());
                         }
                     }
-                    
+
                 }
             }      
+        }
+
+        private void insertBtn_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    string countquery = "SELECT COUNT(*) FROM Food";
+                    Int32 count;
+                    using (SqlCommand cmd = new SqlCommand(countquery, con))
+                    {
+                        count = (Int32)cmd.ExecuteScalar();
+                    }
+                    string insertquery = "INSERT INTO Food(FoodID,FoodName,Price,MSize,Description,Cuisine) VALUES(@foodid,@foodname,@price,@msize,@description,@cuisine)";
+                    using (SqlCommand cmd = new SqlCommand(insertquery, con))
+                    {
+                        cmd.Parameters.AddWithValue("@foodid", "F00"+count++);
+                        cmd.Parameters.AddWithValue("@foodname", foodNameTextBox.Text);
+                        cmd.Parameters.AddWithValue("@price", priceTextBox.Text);
+                        //cmd.Parameters.AddWithValue("@msize", );
+                        cmd.Parameters.AddWithValue("@description", descriptionTextBox.Text);
+                        //cmd.Parameters.AddWithValue("@cuisine");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+                finally
+                {
+                    string message = "Data insert successful!";
+                    string title = "Insert Successful";
+                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
         }
     }
 }

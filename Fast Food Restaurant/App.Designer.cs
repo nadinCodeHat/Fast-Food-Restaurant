@@ -77,6 +77,7 @@ namespace Fast_Food_Restaurant
             // 
             this.foodIdTextBox.Location = new System.Drawing.Point(83, 6);
             this.foodIdTextBox.Name = "foodIdTextBox";
+            this.foodIdTextBox.ReadOnly = true;
             this.foodIdTextBox.Size = new System.Drawing.Size(193, 20);
             this.foodIdTextBox.TabIndex = 1;
             // 
@@ -274,6 +275,7 @@ namespace Fast_Food_Restaurant
             this.insertBtn.TabIndex = 23;
             this.insertBtn.Text = "Insert";
             this.insertBtn.UseVisualStyleBackColor = true;
+            this.insertBtn.Click += new System.EventHandler(this.insertBtn_Click);
             // 
             // updateBtn
             // 
