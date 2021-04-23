@@ -218,7 +218,33 @@ namespace Fast_Food_Restaurant
 
         private void updateBtn_Click(object sender, EventArgs e)
         {
-
+            using(SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    string insertquery = "UPDATE Food set Food.FoodName = @foodname,Food.Price,Food.MSize,Food.Description,Food.Cuisine) VALUES(@foodid,@foodname,@price,(SELECT S.SizeID FROM MealSize S WHERE S.SizeName = @msize),@description,(SELECT C.CuisineID FROM Cuisine C WHERE C.CuisineName = @cuisine))";
+                    using (SqlCommand cmd = new SqlCommand(insertquery, con))
+                    {
+                        cmd.Parameters.AddWithValue("@foodname", foodNameTextBox.Text);
+                        cmd.Parameters.AddWithValue("@price", priceTextBox.Text);
+                        cmd.Parameters.AddWithValue("@msize", sizecomboBox.SelectedItem.ToString());
+                        cmd.Parameters.AddWithValue("@description", descriptionTextBox.Text);
+                        cmd.Parameters.AddWithValue("@cuisine", cuisinecomboBox.SelectedItem.ToString());
+                        cmd.ExecuteNonQuery();
+                    }
+                    string message = "Data update successful!";
+                    string title = "Update Successful";
+                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+                finally
+                {
+                    bindFoodData();
+                }
+            }
         }
 
         private void deleteBtn_Click(object sender, EventArgs e)
