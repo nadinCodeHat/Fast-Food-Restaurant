@@ -142,6 +142,38 @@ namespace Fast_Food_Restaurant
                 foodNameTextBox.Text = row.Cells["FoodName"].Value.ToString();
                 priceTextBox.Text = row.Cells["Price"].Value.ToString();
                 descriptionTextBox.Text = row.Cells["Description"].Value.ToString();
+
+                DataRow[] dr = food_dt.Select(row.Cells["FoodID"].Value.ToString());
+                foreach (DataRow d1row in dr)
+                {
+                    int msize = d1row.Field<int>("MSize");
+                    int cuisine = d1row.Field<int>("Cuisine");
+                    using (SqlConnection con = new SqlConnection(connectionString))
+                    {
+                        try
+                        {
+                            string query = "SELECT MealSize.SizeName, Cuisine.CuisineName FROM MealSize,Cuisine WHERE MealSize.SizeID = Food.MSize AND Cuisine.CuisineID = Food.Cuisine AND Food.MSize ='" + msize + "' AND Food.Cuisine = '" + cuisine + "'";
+                            using (SqlCommand cmd = new SqlCommand(query, con))
+                            {
+                                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                                {
+                                    DataTable dt = new DataTable();
+                                    sda.Fill(dt);
+                                    foreach (DataRow d2row in dt.Rows)
+                                    {
+                                       sizecomboBox.SelectedItem = d2row["SizeName"].ToString();
+                                       cuisinecomboBox.SelectedItem =  d2row["Cuisine"].ToString();
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                        }
+                    }
+                    
+                }
             }      
         }
     }
