@@ -32,10 +32,11 @@ namespace Fast_Food_Restaurant
         DataTable food_dt = new DataTable();
         private void bindFoodData()
         {
-            foodTable.Columns.Clear();
+            food_dt.Clear();
             foodTable.DataSource = null;
-            foodTable.Rows.Clear();
+            foodTable.Update();
             foodTable.Refresh();
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 try
@@ -97,7 +98,6 @@ namespace Fast_Food_Restaurant
                             }
                         }
                     }
-                    con.Close();
                 }
                 catch (Exception ex)
                 {
@@ -124,7 +124,6 @@ namespace Fast_Food_Restaurant
                             }
                         }
                     }
-                    con.Close();
                 }
                 catch (Exception ex)
                 {
@@ -183,22 +182,28 @@ namespace Fast_Food_Restaurant
             {
                 try
                 {
+                    con.Open();
                     string countquery = "SELECT COUNT(*) FROM Food";
                     Int32 count;
                     using (SqlCommand cmd = new SqlCommand(countquery, con))
                     {
                         count = (Int32)cmd.ExecuteScalar();
                     }
-                    string insertquery = "INSERT INTO Food(FoodID,FoodName,Price,MSize,Description,Cuisine) VALUES(@foodid,@foodname,@price,@msize,@description,@cuisine)";
+                    string insertquery = "INSERT INTO Food(Food.FoodID,Food.FoodName,Food.Price,Food.MSize,Food.Description,Food.Cuisine) VALUES(@foodid,@foodname,@price,(SELECT S.SizeID FROM MealSize S WHERE S.SizeName = @msize),@description,(SELECT C.CuisineID FROM Cuisine C WHERE C.CuisineName = @cuisine))";
                     using (SqlCommand cmd = new SqlCommand(insertquery, con))
                     {
-                        cmd.Parameters.AddWithValue("@foodid", "F00"+count++);
+                        count++;
+                        cmd.Parameters.AddWithValue("@foodid", "F00"+count);
                         cmd.Parameters.AddWithValue("@foodname", foodNameTextBox.Text);
                         cmd.Parameters.AddWithValue("@price", priceTextBox.Text);
-                        //cmd.Parameters.AddWithValue("@msize", );
+                        cmd.Parameters.AddWithValue("@msize", sizecomboBox.SelectedItem.ToString());
                         cmd.Parameters.AddWithValue("@description", descriptionTextBox.Text);
-                        //cmd.Parameters.AddWithValue("@cuisine");
+                        cmd.Parameters.AddWithValue("@cuisine", cuisinecomboBox.SelectedItem.ToString());
+                        cmd.ExecuteNonQuery();
                     }
+                    string message = "Data insert successful!";
+                    string title = "Insert Successful";
+                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);        
                 }
                 catch (Exception ex)
                 {
@@ -206,11 +211,19 @@ namespace Fast_Food_Restaurant
                 }
                 finally
                 {
-                    string message = "Data insert successful!";
-                    string title = "Insert Successful";
-                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    bindFoodData();
                 }
             }
+        }
+
+        private void updateBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void deleteBtn_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

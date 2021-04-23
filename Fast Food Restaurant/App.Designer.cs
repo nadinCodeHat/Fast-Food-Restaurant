@@ -285,6 +285,7 @@ namespace Fast_Food_Restaurant
             this.updateBtn.TabIndex = 24;
             this.updateBtn.Text = "Update";
             this.updateBtn.UseVisualStyleBackColor = true;
+            this.updateBtn.Click += new System.EventHandler(this.updateBtn_Click);
             // 
             // deleteBtn
             // 
@@ -294,6 +295,7 @@ namespace Fast_Food_Restaurant
             this.deleteBtn.TabIndex = 25;
             this.deleteBtn.Text = "Delete";
             this.deleteBtn.UseVisualStyleBackColor = true;
+            this.deleteBtn.Click += new System.EventHandler(this.deleteBtn_Click);
             // 
             // filterbycuisineLabel
             // 
