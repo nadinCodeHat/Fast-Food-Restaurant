@@ -281,5 +281,21 @@ namespace Fast_Food_Restaurant
                 }
             }
         }
+
+        private void browseBtn_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fdlg = new OpenFileDialog();
+            fdlg.Title = "Browse Food Image";
+            fdlg.InitialDirectory = "c:\\";
+            fdlg.Filter = "Image Files|*.jpg;*.jpeg;*.png;...";
+            fdlg.FilterIndex = 2;
+            fdlg.RestoreDirectory = true;
+            if (fdlg.ShowDialog() == DialogResult.OK)
+            {
+                // display image in picture box  
+                foodpictureBox.Image = new Bitmap(fdlg.FileName);
+            }
+        }   
+
     }
 }

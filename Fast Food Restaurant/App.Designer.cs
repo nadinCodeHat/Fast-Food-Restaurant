@@ -32,7 +32,7 @@ namespace Fast_Food_Restaurant
             this.foodIdLabel = new System.Windows.Forms.Label();
             this.foodIdTextBox = new System.Windows.Forms.TextBox();
             this.sizecomboBox = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.browseBtn = new System.Windows.Forms.Button();
             this.foodTable = new System.Windows.Forms.DataGridView();
             this.foodNameTextBox = new System.Windows.Forms.TextBox();
             this.foodNameLabel = new System.Windows.Forms.Label();
@@ -43,7 +43,7 @@ namespace Fast_Food_Restaurant
             this.descriptionLabel = new System.Windows.Forms.Label();
             this.cuisineLabel = new System.Windows.Forms.Label();
             this.cuisinecomboBox = new System.Windows.Forms.ComboBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.foodpictureBox = new System.Windows.Forms.PictureBox();
             this.searchLabel = new System.Windows.Forms.Label();
             this.searchTextBox = new System.Windows.Forms.TextBox();
             this.byId = new System.Windows.Forms.RadioButton();
@@ -59,7 +59,7 @@ namespace Fast_Food_Restaurant
             this.filterbycuisinecomboBox = new System.Windows.Forms.ComboBox();
             this.cuisineTable = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.foodTable)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.foodpictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cuisineTable)).BeginInit();
             this.SuspendLayout();
@@ -89,14 +89,15 @@ namespace Fast_Food_Restaurant
             this.sizecomboBox.Size = new System.Drawing.Size(193, 21);
             this.sizecomboBox.TabIndex = 2;
             // 
-            // button1
+            // browseBtn
             // 
-            this.button1.Location = new System.Drawing.Point(189, 233);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(87, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "<<";
-            this.button1.UseVisualStyleBackColor = true;
+            this.browseBtn.Location = new System.Drawing.Point(189, 233);
+            this.browseBtn.Name = "browseBtn";
+            this.browseBtn.Size = new System.Drawing.Size(87, 23);
+            this.browseBtn.TabIndex = 3;
+            this.browseBtn.Text = "<<";
+            this.browseBtn.UseVisualStyleBackColor = true;
+            this.browseBtn.Click += new System.EventHandler(this.browseBtn_Click);
             // 
             // foodTable
             // 
@@ -185,14 +186,15 @@ namespace Fast_Food_Restaurant
             this.cuisinecomboBox.Size = new System.Drawing.Size(193, 21);
             this.cuisinecomboBox.TabIndex = 13;
             // 
-            // pictureBox1
+            // foodpictureBox
             // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Location = new System.Drawing.Point(15, 233);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(155, 130);
-            this.pictureBox1.TabIndex = 14;
-            this.pictureBox1.TabStop = false;
+            this.foodpictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.foodpictureBox.Location = new System.Drawing.Point(15, 233);
+            this.foodpictureBox.Name = "foodpictureBox";
+            this.foodpictureBox.Size = new System.Drawing.Size(155, 130);
+            this.foodpictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.foodpictureBox.TabIndex = 14;
+            this.foodpictureBox.TabStop = false;
             // 
             // searchLabel
             // 
@@ -342,7 +344,7 @@ namespace Fast_Food_Restaurant
             this.Controls.Add(this.byId);
             this.Controls.Add(this.searchTextBox);
             this.Controls.Add(this.searchLabel);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.foodpictureBox);
             this.Controls.Add(this.cuisinecomboBox);
             this.Controls.Add(this.cuisineLabel);
             this.Controls.Add(this.descriptionTextBox);
@@ -353,7 +355,7 @@ namespace Fast_Food_Restaurant
             this.Controls.Add(this.foodNameTextBox);
             this.Controls.Add(this.foodNameLabel);
             this.Controls.Add(this.foodTable);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.browseBtn);
             this.Controls.Add(this.sizecomboBox);
             this.Controls.Add(this.foodIdTextBox);
             this.Controls.Add(this.foodIdLabel);
@@ -362,7 +364,7 @@ namespace Fast_Food_Restaurant
             this.Text = "Fast Food Restaurant";
             this.Load += new System.EventHandler(this.App_Load);
             ((System.ComponentModel.ISupportInitialize)(this.foodTable)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.foodpictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cuisineTable)).EndInit();
             this.ResumeLayout(false);
@@ -375,7 +377,7 @@ namespace Fast_Food_Restaurant
         private System.Windows.Forms.Label foodIdLabel;
         private System.Windows.Forms.TextBox foodIdTextBox;
         private System.Windows.Forms.ComboBox sizecomboBox;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button browseBtn;
         private System.Windows.Forms.DataGridView foodTable;
         private System.Windows.Forms.TextBox foodNameTextBox;
         private System.Windows.Forms.Label foodNameLabel;
@@ -386,7 +388,7 @@ namespace Fast_Food_Restaurant
         private System.Windows.Forms.Label descriptionLabel;
         private System.Windows.Forms.Label cuisineLabel;
         private System.Windows.Forms.ComboBox cuisinecomboBox;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox foodpictureBox;
         private System.Windows.Forms.Label searchLabel;
         private System.Windows.Forms.TextBox searchTextBox;
         private System.Windows.Forms.RadioButton byId;
