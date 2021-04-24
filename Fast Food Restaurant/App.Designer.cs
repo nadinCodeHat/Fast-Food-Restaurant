@@ -209,10 +209,12 @@ namespace Fast_Food_Restaurant
             this.searchTextBox.Name = "searchTextBox";
             this.searchTextBox.Size = new System.Drawing.Size(193, 20);
             this.searchTextBox.TabIndex = 16;
+            this.searchTextBox.TextChanged += new System.EventHandler(this.searchTextBox_TextChanged);
             // 
             // byId
             // 
             this.byId.AutoSize = true;
+            this.byId.Checked = true;
             this.byId.Location = new System.Drawing.Point(548, 7);
             this.byId.Name = "byId";
             this.byId.Size = new System.Drawing.Size(50, 17);
@@ -228,7 +230,6 @@ namespace Fast_Food_Restaurant
             this.byName.Name = "byName";
             this.byName.Size = new System.Drawing.Size(64, 17);
             this.byName.TabIndex = 18;
-            this.byName.TabStop = true;
             this.byName.Text = "byName";
             this.byName.UseVisualStyleBackColor = true;
             // 

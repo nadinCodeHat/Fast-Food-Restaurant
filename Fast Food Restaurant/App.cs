@@ -56,8 +56,8 @@ namespace Fast_Food_Restaurant
                             foodTable.Columns[0].HeaderText = "FoodID";
                             foodTable.Columns[0].DataPropertyName = "FoodID";
 
-                            foodTable.Columns[1].HeaderText = "foodname";
-                            foodTable.Columns[1].Name = "FoodName";
+                            foodTable.Columns[1].Name = "foodname";
+                            foodTable.Columns[1].HeaderText = "FoodName";
                             foodTable.Columns[1].DataPropertyName = "FoodName";
 
                             foodTable.Columns[2].Name = "price";
@@ -250,6 +250,36 @@ namespace Fast_Food_Restaurant
         private void deleteBtn_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void searchTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (byId.Checked)
+            {
+                if (searchTextBox.Text == "")
+                {
+                    foodTable.DataSource = food_dt;
+                }
+                else
+                {
+                    DataView filterData = new DataView(food_dt);
+                    filterData.RowFilter = "FoodID LIKE '%" + searchTextBox.Text + "%'";
+                    foodTable.DataSource = filterData;
+                }
+            }
+            else if(byName.Checked)
+            {
+                if (searchTextBox.Text == "")
+                {
+                    foodTable.DataSource = food_dt;
+                }
+                else
+                {
+                    DataView filterData = new DataView(food_dt);
+                    filterData.RowFilter = "FoodName LIKE '%" + searchTextBox.Text + "%'";
+                    foodTable.DataSource = filterData;
+                }
+            }
         }
     }
 }
