@@ -49,9 +49,9 @@ namespace Fast_Food_Restaurant
             this.byId = new System.Windows.Forms.RadioButton();
             this.byName = new System.Windows.Forms.RadioButton();
             this.summaryBtn = new System.Windows.Forms.Button();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.foodItemsTable = new System.Windows.Forms.DataGridView();
             this.totalLabel = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
+            this.itemCount = new System.Windows.Forms.Label();
             this.insertBtn = new System.Windows.Forms.Button();
             this.updateBtn = new System.Windows.Forms.Button();
             this.deleteBtn = new System.Windows.Forms.Button();
@@ -60,7 +60,7 @@ namespace Fast_Food_Restaurant
             this.cuisineTable = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.foodTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.foodpictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.foodItemsTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cuisineTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -243,14 +243,16 @@ namespace Fast_Food_Restaurant
             this.summaryBtn.TabIndex = 19;
             this.summaryBtn.Text = "Summary";
             this.summaryBtn.UseVisualStyleBackColor = true;
+            this.summaryBtn.Click += new System.EventHandler(this.summaryBtn_Click);
             // 
-            // dataGridView2
+            // foodItemsTable
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(391, 233);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(451, 130);
-            this.dataGridView2.TabIndex = 20;
+            this.foodItemsTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.foodItemsTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.foodItemsTable.Location = new System.Drawing.Point(391, 233);
+            this.foodItemsTable.Name = "foodItemsTable";
+            this.foodItemsTable.Size = new System.Drawing.Size(451, 130);
+            this.foodItemsTable.TabIndex = 20;
             // 
             // totalLabel
             // 
@@ -261,14 +263,14 @@ namespace Fast_Food_Restaurant
             this.totalLabel.TabIndex = 21;
             this.totalLabel.Text = "Total:";
             // 
-            // label9
+            // itemCount
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(337, 313);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(35, 13);
-            this.label9.TabIndex = 22;
-            this.label9.Text = "label9";
+            this.itemCount.AutoSize = true;
+            this.itemCount.Location = new System.Drawing.Point(337, 313);
+            this.itemCount.Name = "itemCount";
+            this.itemCount.Size = new System.Drawing.Size(13, 13);
+            this.itemCount.TabIndex = 22;
+            this.itemCount.Text = "0";
             // 
             // insertBtn
             // 
@@ -336,9 +338,9 @@ namespace Fast_Food_Restaurant
             this.Controls.Add(this.deleteBtn);
             this.Controls.Add(this.updateBtn);
             this.Controls.Add(this.insertBtn);
-            this.Controls.Add(this.label9);
+            this.Controls.Add(this.itemCount);
             this.Controls.Add(this.totalLabel);
-            this.Controls.Add(this.dataGridView2);
+            this.Controls.Add(this.foodItemsTable);
             this.Controls.Add(this.summaryBtn);
             this.Controls.Add(this.byName);
             this.Controls.Add(this.byId);
@@ -365,7 +367,7 @@ namespace Fast_Food_Restaurant
             this.Load += new System.EventHandler(this.App_Load);
             ((System.ComponentModel.ISupportInitialize)(this.foodTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.foodpictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.foodItemsTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cuisineTable)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -394,9 +396,9 @@ namespace Fast_Food_Restaurant
         private System.Windows.Forms.RadioButton byId;
         private System.Windows.Forms.RadioButton byName;
         private System.Windows.Forms.Button summaryBtn;
-        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridView foodItemsTable;
         private System.Windows.Forms.Label totalLabel;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label itemCount;
         private System.Windows.Forms.Button insertBtn;
         private System.Windows.Forms.Button updateBtn;
         private System.Windows.Forms.Button deleteBtn;

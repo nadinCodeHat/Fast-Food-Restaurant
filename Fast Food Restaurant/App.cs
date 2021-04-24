@@ -295,7 +295,54 @@ namespace Fast_Food_Restaurant
                 // display image in picture box  
                 foodpictureBox.Image = new Bitmap(fdlg.FileName);
             }
-        }   
+        }
 
+        DataTable food_items_dt = new DataTable();
+        private void summaryBtn_Click(object sender, EventArgs e)
+        {
+            food_items_dt.Clear();
+            foodItemsTable.DataSource = null;
+            foodItemsTable.Update();
+            foodItemsTable.Refresh();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    string query = "SELECT Food.FoodID, Food.FoodName, Cuisine.CuisineName FROM Food, Cuisine WHERE Cuisine.CuisineID = Food.Cuisine";
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                        {
+                            sda.Fill(food_items_dt);
+
+                            foodItemsTable.AutoGenerateColumns = false;
+                            foodItemsTable.ColumnCount = 3;
+
+                            //Add Columns
+                            foodItemsTable.Columns[0].Name = "foodid";
+                            foodItemsTable.Columns[0].HeaderText = "FoodID";
+                            foodItemsTable.Columns[0].DataPropertyName = "FoodID";
+
+                            foodItemsTable.Columns[1].Name = "foodname";
+                            foodItemsTable.Columns[1].HeaderText = "FoodName";
+                            foodItemsTable.Columns[1].DataPropertyName = "FoodName";
+
+                            foodItemsTable.Columns[2].Name = "cuisinename";
+                            foodItemsTable.Columns[2].HeaderText = "CuisineName";
+                            foodItemsTable.Columns[2].DataPropertyName = "CuisineName";
+
+                            foodItemsTable.DataSource = food_items_dt;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+            foodItemsTable.ClearSelection();
+            itemCount.Text = Convert.ToString(foodItemsTable.Rows.Count - 1);
+        }
     }
 }
