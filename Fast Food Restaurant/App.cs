@@ -186,81 +186,50 @@ namespace Fast_Food_Restaurant
             }      
         }
 
-        private void insertBtn_Click(object sender, EventArgs e)
+        private bool validateData()
         {
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    con.Open();
-                    string countquery = "SELECT COUNT(*) FROM Food";
-                    Int32 count;
-                    using (SqlCommand cmd = new SqlCommand(countquery, con))
-                    {
-                        count = (Int32)cmd.ExecuteScalar();
-                    }
-                    string insertquery = "INSERT INTO Food(Food.FoodID,Food.FoodName,Food.Price,Food.MSize,Food.Description,Food.Cuisine,Food.Image) VALUES(@foodid,@foodname,@price,(SELECT S.SizeID FROM MealSize S WHERE S.SizeName = @msize),@description,(SELECT C.CuisineID FROM Cuisine C WHERE C.CuisineName = @cuisine),@image)";
-                    using (SqlCommand cmd = new SqlCommand(insertquery, con))
-                    {
-                        count++;
-                        cmd.Parameters.AddWithValue("@foodid", "F00"+count);
-                        cmd.Parameters.AddWithValue("@foodname", foodNameTextBox.Text);
-                        cmd.Parameters.AddWithValue("@price", priceTextBox.Text);
-                        cmd.Parameters.AddWithValue("@msize", sizecomboBox.SelectedItem.ToString());
-                        cmd.Parameters.AddWithValue("@description", descriptionTextBox.Text);
-                        cmd.Parameters.AddWithValue("@cuisine", cuisinecomboBox.SelectedItem.ToString());
-
-                        Image img = foodpictureBox.Image;
-                        ImageConverter converter = new ImageConverter();
-                        byte[] arr = (byte[])converter.ConvertTo(img, typeof(byte[]));
-
-                        cmd.Parameters.AddWithValue("@image", arr);
-                        
-                        cmd.ExecuteNonQuery();
-                    }
-                    string message = "Data insert successful!";
-                    string title = "Insert Successful";
-                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);        
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-                finally
-                {
-                    bindFoodData();
-                }
-            }
+            if (String.IsNullOrEmpty(foodNameTextBox.Text) || String.IsNullOrEmpty(priceTextBox.Text) || sizecomboBox.SelectedItem == null || String.IsNullOrEmpty(descriptionTextBox.Text) || cuisinecomboBox.SelectedItem == null)
+                return false;
+            else
+                return true;
         }
 
-        private void updateBtn_Click(object sender, EventArgs e)
+        private void insertBtn_Click(object sender, EventArgs e)
         {
-            if (foodTable.SelectedRows.Count > 0)
+            if (validateData())
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     try
                     {
-                        string updatequery = "UPDATE Food SET FoodName = @foodname, Price = @price, MSize = (SELECT SizeID FROM MealSize WHERE SizeName = @msize), Description = @description, Cuisine = (SELECT CuisineID FROM Cuisine WHERE CuisineName = @cuisine), Image = @image WHERE FoodID = '" + foodID + "'";
-                        using (SqlCommand cmd = new SqlCommand(updatequery, con))
+                        con.Open();
+                        string countquery = "SELECT COUNT(*) FROM Food";
+                        Int32 count;
+                        using (SqlCommand cmd = new SqlCommand(countquery, con))
                         {
+                            count = (Int32)cmd.ExecuteScalar();
+                        }
+                        string insertquery = "INSERT INTO Food(Food.FoodID,Food.FoodName,Food.Price,Food.MSize,Food.Description,Food.Cuisine,Food.Image) VALUES(@foodid,@foodname,@price,(SELECT S.SizeID FROM MealSize S WHERE S.SizeName = @msize),@description,(SELECT C.CuisineID FROM Cuisine C WHERE C.CuisineName = @cuisine),@image)";
+                        using (SqlCommand cmd = new SqlCommand(insertquery, con))
+                        {
+                            count++;
+                            cmd.Parameters.AddWithValue("@foodid", "F00" + count);
                             cmd.Parameters.AddWithValue("@foodname", foodNameTextBox.Text);
                             cmd.Parameters.AddWithValue("@price", priceTextBox.Text);
                             cmd.Parameters.AddWithValue("@msize", sizecomboBox.SelectedItem.ToString());
                             cmd.Parameters.AddWithValue("@description", descriptionTextBox.Text);
                             cmd.Parameters.AddWithValue("@cuisine", cuisinecomboBox.SelectedItem.ToString());
-                            
+
                             Image img = foodpictureBox.Image;
                             ImageConverter converter = new ImageConverter();
                             byte[] arr = (byte[])converter.ConvertTo(img, typeof(byte[]));
 
                             cmd.Parameters.AddWithValue("@image", arr);
 
-                            con.Open();
                             cmd.ExecuteNonQuery();
                         }
-                        string message = "Record update successful!";
-                        string title = "Update Successful";
+                        string message = "Data insert successful!";
+                        string title = "Insert Successful";
                         MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
@@ -271,6 +240,64 @@ namespace Fast_Food_Restaurant
                     {
                         bindFoodData();
                     }
+                }
+            }
+            else
+            {
+                string message = "Please fill the incomplete fields.";
+                string title = "Incomplete Values";
+                MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            
+        }
+
+        private void updateBtn_Click(object sender, EventArgs e)
+        {
+            if (foodTable.SelectedRows.Count > 0)
+            {
+                if (validateData())
+                {
+                    using (SqlConnection con = new SqlConnection(connectionString))
+                    {
+                        try
+                        {
+                            string updatequery = "UPDATE Food SET FoodName = @foodname, Price = @price, MSize = (SELECT SizeID FROM MealSize WHERE SizeName = @msize), Description = @description, Cuisine = (SELECT CuisineID FROM Cuisine WHERE CuisineName = @cuisine), Image = @image WHERE FoodID = '" + foodID + "'";
+                            using (SqlCommand cmd = new SqlCommand(updatequery, con))
+                            {
+                                cmd.Parameters.AddWithValue("@foodname", foodNameTextBox.Text);
+                                cmd.Parameters.AddWithValue("@price", priceTextBox.Text);
+                                cmd.Parameters.AddWithValue("@msize", sizecomboBox.SelectedItem.ToString());
+                                cmd.Parameters.AddWithValue("@description", descriptionTextBox.Text);
+                                cmd.Parameters.AddWithValue("@cuisine", cuisinecomboBox.SelectedItem.ToString());
+
+                                Image img = foodpictureBox.Image;
+                                ImageConverter converter = new ImageConverter();
+                                byte[] arr = (byte[])converter.ConvertTo(img, typeof(byte[]));
+
+                                cmd.Parameters.AddWithValue("@image", arr);
+
+                                con.Open();
+                                cmd.ExecuteNonQuery();
+                            }
+                            string message = "Record update successful!";
+                            string title = "Update Successful";
+                            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.ToString());
+                        }
+                        finally
+                        {
+                            bindFoodData();
+                        }
+                    }
+                }
+                else
+                {
+                    string message = "Please fill the incomplete fields.";
+                    string title = "Incomplete Values";
+                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             else
