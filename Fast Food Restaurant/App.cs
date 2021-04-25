@@ -220,7 +220,7 @@ namespace Fast_Food_Restaurant
                     }
                     string message = "Data insert successful!";
                     string title = "Insert Successful";
-                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);        
+                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);        
                 }
                 catch (Exception ex)
                 {
@@ -235,13 +235,13 @@ namespace Fast_Food_Restaurant
 
         private void updateBtn_Click(object sender, EventArgs e)
         {
-            if (foodTable.SelectedRows.Count >= 0)
+            if (foodTable.SelectedRows.Count > 0)
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     try
                     {
-                        string updatequery = "UPDATE Food set Food.FoodName = @foodname,Food.Price = @price,Food.MSize = ,Food.Description,Food.Cuisine) VALUES(@foodid,@foodname,@price,(SELECT S.SizeID FROM MealSize S WHERE S.SizeName = @msize),@description,(SELECT C.CuisineID FROM Cuisine C WHERE C.CuisineName = @cuisine))";
+                        string updatequery = "UPDATE Food SET FoodName = @foodname, Price = @price, MSize = (SELECT SizeID FROM MealSize WHERE SizeName = @msize), Description = @description, Cuisine = (SELECT CuisineID FROM Cuisine WHERE CuisineName = @cuisine), Image = @image WHERE FoodID = '" + foodID + "'";
                         using (SqlCommand cmd = new SqlCommand(updatequery, con))
                         {
                             cmd.Parameters.AddWithValue("@foodname", foodNameTextBox.Text);
@@ -249,11 +249,19 @@ namespace Fast_Food_Restaurant
                             cmd.Parameters.AddWithValue("@msize", sizecomboBox.SelectedItem.ToString());
                             cmd.Parameters.AddWithValue("@description", descriptionTextBox.Text);
                             cmd.Parameters.AddWithValue("@cuisine", cuisinecomboBox.SelectedItem.ToString());
+                            
+                            Image img = foodpictureBox.Image;
+                            ImageConverter converter = new ImageConverter();
+                            byte[] arr = (byte[])converter.ConvertTo(img, typeof(byte[]));
+
+                            cmd.Parameters.AddWithValue("@image", arr);
+
+                            con.Open();
                             cmd.ExecuteNonQuery();
                         }
                         string message = "Record update successful!";
                         string title = "Update Successful";
-                        MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
                     {
@@ -267,13 +275,15 @@ namespace Fast_Food_Restaurant
             }
             else
             {
-                MessageBox.Show("Please select record to update");
+                string message = "Please select record to update";
+                string title = "Warning";
+                MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void deleteBtn_Click(object sender, EventArgs e)
         {
-            if (foodTable.SelectedRows.Count >= 0)
+            if (foodTable.SelectedRows.Count > 0)
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
@@ -303,12 +313,15 @@ namespace Fast_Food_Restaurant
                         sizecomboBox.SelectedItem = null;
                         descriptionTextBox.Text = null;
                         cuisinecomboBox.SelectedItem = null;
+                        foodpictureBox.Image = null;
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Please select record to delete");
+                string message = "Please select record to delete";
+                string title = "Warning";
+                MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
