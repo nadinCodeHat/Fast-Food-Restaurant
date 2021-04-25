@@ -334,6 +334,7 @@ namespace Fast_Food_Restaurant
             this.cuisineTable.AllowUserToDeleteRows = false;
             this.cuisineTable.AllowUserToResizeColumns = false;
             this.cuisineTable.AllowUserToResizeRows = false;
+            this.cuisineTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.cuisineTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.cuisineTable.Location = new System.Drawing.Point(391, 413);
             this.cuisineTable.Name = "cuisineTable";

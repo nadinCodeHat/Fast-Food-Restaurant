@@ -445,9 +445,47 @@ namespace Fast_Food_Restaurant
             itemCount.Text = foodItemsTable.Rows.Count.ToString();
         }
 
+        DataTable cuisine_dt = new DataTable();
         private void filterByCuisine_SelectedIndexChanged(object sender, EventArgs e)
         {
+            cuisine_dt.Clear();
+            cuisineTable.DataSource = null;
+            cuisineTable.Update();
+            cuisineTable.Refresh();
 
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    string query = "SELECT Food.FoodID, Food.FoodName FROM Food, Cuisine WHERE Cuisine.CuisineID = Food.Cuisine AND Cuisine.CuisineName = '" + filterByCuisine.SelectedItem.ToString() + "'";
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                        {
+                            sda.Fill(cuisine_dt);
+
+                            cuisineTable.AutoGenerateColumns = false;
+                            cuisineTable.ColumnCount = 2;
+
+                            //Add Columns
+                            cuisineTable.Columns[0].Name = "foodid";
+                            cuisineTable.Columns[0].HeaderText = "FoodID";
+                            cuisineTable.Columns[0].DataPropertyName = "FoodID";
+
+                            cuisineTable.Columns[1].Name = "foodname";
+                            cuisineTable.Columns[1].HeaderText = "FoodName";
+                            cuisineTable.Columns[1].DataPropertyName = "FoodName";
+
+                            cuisineTable.DataSource = cuisine_dt;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+            cuisineTable.ClearSelection();
         }
     }
 }
