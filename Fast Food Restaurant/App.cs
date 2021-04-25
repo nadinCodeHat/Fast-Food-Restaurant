@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -121,6 +122,7 @@ namespace Fast_Food_Restaurant
                             while (dr.Read())
                             {
                                 cuisinecomboBox.Items.Add(dr[0]);
+                                filterByCuisine.Items.Add(dr[0]);
                             }
                         }
                     }
@@ -132,6 +134,7 @@ namespace Fast_Food_Restaurant
             }
         }
         
+        string foodID;
         private void foodTable_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if(e.RowIndex >=0)
@@ -142,16 +145,18 @@ namespace Fast_Food_Restaurant
                 priceTextBox.Text = row.Cells["Price"].Value.ToString();
                 descriptionTextBox.Text = row.Cells["Description"].Value.ToString();
 
-                DataRow[] dr = food_dt.Select(string.Format("FoodID ='{0}' ", row.Cells["FoodID"].Value.ToString()));
+                foodID = row.Cells["FoodID"].Value.ToString();
+                DataRow[] dr = food_dt.Select(string.Format("FoodID ='{0}' ", foodID));
                 foreach (DataRow d1row in dr)
                 {
                     int msize = d1row.Field<int>("MSize");
                     int cuisine = d1row.Field<int>("Cuisine");
+
                     using (SqlConnection con = new SqlConnection(connectionString))
                     {
                         try
                         {
-                            string query = "SELECT MealSize.SizeName, Cuisine.CuisineName FROM MealSize,Cuisine,Food WHERE MealSize.SizeID = Food.MSize AND Cuisine.CuisineID = Food.Cuisine AND Food.MSize ='" + msize + "' AND Food.Cuisine = '" + cuisine + "'";
+                            string query = "SELECT MealSize.SizeName, Cuisine.CuisineName, Food.Image FROM MealSize,Cuisine,Food WHERE MealSize.SizeID = Food.MSize AND Cuisine.CuisineID = Food.Cuisine AND Food.MSize ='" + msize + "' AND Food.Cuisine = '" + cuisine + "' AND Food.FoodID = '"+foodID+"'";
                             using (SqlCommand cmd = new SqlCommand(query, con))
                             {
                                 using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
@@ -162,6 +167,11 @@ namespace Fast_Food_Restaurant
                                     {
                                         sizecomboBox.SelectedItem = d2row["SizeName"].ToString();
                                         cuisinecomboBox.SelectedItem = d2row["CuisineName"].ToString();
+                                        
+                                        Byte[] data = new Byte[0];
+                                        data = (Byte[])(d2row["Image"]);
+                                        MemoryStream mem = new MemoryStream(data);
+                                        foodpictureBox.Image = Image.FromStream(mem);
                                     }
                                 }
                             }
@@ -189,7 +199,7 @@ namespace Fast_Food_Restaurant
                     {
                         count = (Int32)cmd.ExecuteScalar();
                     }
-                    string insertquery = "INSERT INTO Food(Food.FoodID,Food.FoodName,Food.Price,Food.MSize,Food.Description,Food.Cuisine) VALUES(@foodid,@foodname,@price,(SELECT S.SizeID FROM MealSize S WHERE S.SizeName = @msize),@description,(SELECT C.CuisineID FROM Cuisine C WHERE C.CuisineName = @cuisine))";
+                    string insertquery = "INSERT INTO Food(Food.FoodID,Food.FoodName,Food.Price,Food.MSize,Food.Description,Food.Cuisine,Food.Image) VALUES(@foodid,@foodname,@price,(SELECT S.SizeID FROM MealSize S WHERE S.SizeName = @msize),@description,(SELECT C.CuisineID FROM Cuisine C WHERE C.CuisineName = @cuisine),@image)";
                     using (SqlCommand cmd = new SqlCommand(insertquery, con))
                     {
                         count++;
@@ -199,6 +209,13 @@ namespace Fast_Food_Restaurant
                         cmd.Parameters.AddWithValue("@msize", sizecomboBox.SelectedItem.ToString());
                         cmd.Parameters.AddWithValue("@description", descriptionTextBox.Text);
                         cmd.Parameters.AddWithValue("@cuisine", cuisinecomboBox.SelectedItem.ToString());
+
+                        Image img = foodpictureBox.Image;
+                        ImageConverter converter = new ImageConverter();
+                        byte[] arr = (byte[])converter.ConvertTo(img, typeof(byte[]));
+
+                        cmd.Parameters.AddWithValue("@image", arr);
+                        
                         cmd.ExecuteNonQuery();
                     }
                     string message = "Data insert successful!";
@@ -218,38 +235,81 @@ namespace Fast_Food_Restaurant
 
         private void updateBtn_Click(object sender, EventArgs e)
         {
-            using(SqlConnection con = new SqlConnection(connectionString))
+            if (foodTable.SelectedRows.Count >= 0)
             {
-                try
+                using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    string insertquery = "UPDATE Food set Food.FoodName = @foodname,Food.Price,Food.MSize,Food.Description,Food.Cuisine) VALUES(@foodid,@foodname,@price,(SELECT S.SizeID FROM MealSize S WHERE S.SizeName = @msize),@description,(SELECT C.CuisineID FROM Cuisine C WHERE C.CuisineName = @cuisine))";
-                    using (SqlCommand cmd = new SqlCommand(insertquery, con))
+                    try
                     {
-                        cmd.Parameters.AddWithValue("@foodname", foodNameTextBox.Text);
-                        cmd.Parameters.AddWithValue("@price", priceTextBox.Text);
-                        cmd.Parameters.AddWithValue("@msize", sizecomboBox.SelectedItem.ToString());
-                        cmd.Parameters.AddWithValue("@description", descriptionTextBox.Text);
-                        cmd.Parameters.AddWithValue("@cuisine", cuisinecomboBox.SelectedItem.ToString());
-                        cmd.ExecuteNonQuery();
+                        string updatequery = "UPDATE Food set Food.FoodName = @foodname,Food.Price = @price,Food.MSize = ,Food.Description,Food.Cuisine) VALUES(@foodid,@foodname,@price,(SELECT S.SizeID FROM MealSize S WHERE S.SizeName = @msize),@description,(SELECT C.CuisineID FROM Cuisine C WHERE C.CuisineName = @cuisine))";
+                        using (SqlCommand cmd = new SqlCommand(updatequery, con))
+                        {
+                            cmd.Parameters.AddWithValue("@foodname", foodNameTextBox.Text);
+                            cmd.Parameters.AddWithValue("@price", priceTextBox.Text);
+                            cmd.Parameters.AddWithValue("@msize", sizecomboBox.SelectedItem.ToString());
+                            cmd.Parameters.AddWithValue("@description", descriptionTextBox.Text);
+                            cmd.Parameters.AddWithValue("@cuisine", cuisinecomboBox.SelectedItem.ToString());
+                            cmd.ExecuteNonQuery();
+                        }
+                        string message = "Record update successful!";
+                        string title = "Update Successful";
+                        MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
-                    string message = "Data update successful!";
-                    string title = "Update Successful";
-                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+                    finally
+                    {
+                        bindFoodData();
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-                finally
-                {
-                    bindFoodData();
-                }
+            }
+            else
+            {
+                MessageBox.Show("Please select record to update");
             }
         }
 
         private void deleteBtn_Click(object sender, EventArgs e)
         {
-
+            if (foodTable.SelectedRows.Count >= 0)
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    try
+                    {
+                        con.Open();
+                        string deletequery = "DELETE Food WHERE FoodID = @foodid";
+                        using (SqlCommand cmd = new SqlCommand(deletequery, con))
+                        {
+                            cmd.Parameters.AddWithValue("@foodid", foodID);
+                            cmd.ExecuteNonQuery();
+                        }
+                        string message = "Record delete successful!";
+                        string title = "Delete Successful";
+                        MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+                    finally
+                    {
+                        bindFoodData();
+                        foodIdTextBox.Text = null;
+                        foodNameTextBox.Text = null;
+                        priceTextBox.Text = null;
+                        sizecomboBox.SelectedItem = null;
+                        descriptionTextBox.Text = null;
+                        cuisinecomboBox.SelectedItem = null;
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select record to delete");
+            }
         }
 
         private void searchTextBox_TextChanged(object sender, EventArgs e)
@@ -342,7 +402,12 @@ namespace Fast_Food_Restaurant
                 }
             }
             foodItemsTable.ClearSelection();
-            itemCount.Text = Convert.ToString(foodItemsTable.Rows.Count - 1);
+            itemCount.Text = foodItemsTable.Rows.Count.ToString();
+        }
+
+        private void filterByCuisine_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

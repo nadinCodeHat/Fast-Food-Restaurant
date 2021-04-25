@@ -56,7 +56,7 @@ namespace Fast_Food_Restaurant
             this.updateBtn = new System.Windows.Forms.Button();
             this.deleteBtn = new System.Windows.Forms.Button();
             this.filterbycuisineLabel = new System.Windows.Forms.Label();
-            this.filterbycuisinecomboBox = new System.Windows.Forms.ComboBox();
+            this.filterByCuisine = new System.Windows.Forms.ComboBox();
             this.cuisineTable = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.foodTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.foodpictureBox)).BeginInit();
@@ -101,6 +101,10 @@ namespace Fast_Food_Restaurant
             // 
             // foodTable
             // 
+            this.foodTable.AllowUserToAddRows = false;
+            this.foodTable.AllowUserToDeleteRows = false;
+            this.foodTable.AllowUserToResizeColumns = false;
+            this.foodTable.AllowUserToResizeRows = false;
             this.foodTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.foodTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.foodTable.Location = new System.Drawing.Point(285, 32);
@@ -247,6 +251,10 @@ namespace Fast_Food_Restaurant
             // 
             // foodItemsTable
             // 
+            this.foodItemsTable.AllowUserToAddRows = false;
+            this.foodItemsTable.AllowUserToDeleteRows = false;
+            this.foodItemsTable.AllowUserToResizeColumns = false;
+            this.foodItemsTable.AllowUserToResizeRows = false;
             this.foodItemsTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.foodItemsTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.foodItemsTable.Location = new System.Drawing.Point(391, 233);
@@ -311,16 +319,21 @@ namespace Fast_Food_Restaurant
             this.filterbycuisineLabel.TabIndex = 26;
             this.filterbycuisineLabel.Text = "Filter by Cuisine:";
             // 
-            // filterbycuisinecomboBox
+            // filterByCuisine
             // 
-            this.filterbycuisinecomboBox.FormattingEnabled = true;
-            this.filterbycuisinecomboBox.Location = new System.Drawing.Point(476, 378);
-            this.filterbycuisinecomboBox.Name = "filterbycuisinecomboBox";
-            this.filterbycuisinecomboBox.Size = new System.Drawing.Size(193, 21);
-            this.filterbycuisinecomboBox.TabIndex = 27;
+            this.filterByCuisine.FormattingEnabled = true;
+            this.filterByCuisine.Location = new System.Drawing.Point(476, 378);
+            this.filterByCuisine.Name = "filterByCuisine";
+            this.filterByCuisine.Size = new System.Drawing.Size(193, 21);
+            this.filterByCuisine.TabIndex = 27;
+            this.filterByCuisine.SelectedIndexChanged += new System.EventHandler(this.filterByCuisine_SelectedIndexChanged);
             // 
             // cuisineTable
             // 
+            this.cuisineTable.AllowUserToAddRows = false;
+            this.cuisineTable.AllowUserToDeleteRows = false;
+            this.cuisineTable.AllowUserToResizeColumns = false;
+            this.cuisineTable.AllowUserToResizeRows = false;
             this.cuisineTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.cuisineTable.Location = new System.Drawing.Point(391, 413);
             this.cuisineTable.Name = "cuisineTable";
@@ -333,7 +346,7 @@ namespace Fast_Food_Restaurant
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(858, 555);
             this.Controls.Add(this.cuisineTable);
-            this.Controls.Add(this.filterbycuisinecomboBox);
+            this.Controls.Add(this.filterByCuisine);
             this.Controls.Add(this.filterbycuisineLabel);
             this.Controls.Add(this.deleteBtn);
             this.Controls.Add(this.updateBtn);
@@ -403,7 +416,7 @@ namespace Fast_Food_Restaurant
         private System.Windows.Forms.Button updateBtn;
         private System.Windows.Forms.Button deleteBtn;
         private System.Windows.Forms.Label filterbycuisineLabel;
-        private System.Windows.Forms.ComboBox filterbycuisinecomboBox;
+        private System.Windows.Forms.ComboBox filterByCuisine;
         private System.Windows.Forms.DataGridView cuisineTable;
     }
 }
